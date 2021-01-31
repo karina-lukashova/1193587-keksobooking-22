@@ -1,6 +1,7 @@
-// Функция, возвращающая случайное целое число из переданного диапазона включительно:
+'use strict'
 
-const getRandomNumber = function (min, max) {
+// Функция, возвращающая случайное целое число из переданного диапазона включительно:
+const getRandomNumber = (min, max) => {
   if (min > max) {
     return 'Значение \'до\' должно быть больше значения \'от\'';
   }
@@ -8,7 +9,7 @@ const getRandomNumber = function (min, max) {
 }
 
 // Функция, возвращающая случайное число с плавающей точкой из переданного диапазона включительно:
-const getNumberWithDigits = function (min, max, digits) {
+const getNumberWithDigits = (min, max, digits) => {
   if (min > max) {
     return 'Значение \'до\' должно быть больше значения \'от\'';
   }
