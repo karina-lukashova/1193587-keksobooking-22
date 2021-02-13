@@ -1,3 +1,10 @@
+// Переменные-константы
+const MIN_X_COORDINATE = 35.65000;
+const MAX_X_COORDINATE = 35.70000;
+const MIN_Y_COORDINATE = 139.70000;
+const MAX_Y_COORDINATE = 139.80000;
+const COORDINATE_DECIMALS = 5;
+
 // Фунция для поиска случайного числа в заданном интервале включительно. Источник: https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Math/random#%D0%BF%D0%BE%D0%BB%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5_%D1%81%D0%BB%D1%83%D1%87%D0%B0%D0%B9%D0%BD%D0%BE%D0%B3%D0%BE_%D1%87%D0%B8%D1%81%D0%BB%D0%B0_%D0%B2_%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%BD%D0%BE%D0%BC_%D0%B8%D0%BD%D1%82%D0%B5%D1%80%D0%B2%D0%B0%D0%BB%D0%B5
 const getRandomNumber = (min, max) => {
   if (min > max) {
@@ -35,5 +42,12 @@ const getUniqueArray = (allArr, count) => {
   return Array.from(uniqueSet);
 }
 
+// Получаем случайные координаты из заданного интервала
+const getLocation = () => {
+  return {
+    x: getCoordinates(MIN_X_COORDINATE, MAX_X_COORDINATE, COORDINATE_DECIMALS),
+    y: getCoordinates(MIN_Y_COORDINATE, MAX_Y_COORDINATE, COORDINATE_DECIMALS),
+  };
+}
 
-export {getRandomInteger, getCoordinates, getRandomArrayElement, getUniqueArray};
+export {getRandomInteger, getRandomArrayElement, getUniqueArray, getLocation};

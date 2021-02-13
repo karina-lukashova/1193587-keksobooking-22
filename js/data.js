@@ -1,5 +1,5 @@
 // Импорт модулей:
-import {getRandomInteger, getCoordinates, getRandomArrayElement, getUniqueArray} from './util.js';
+import {getRandomInteger, getRandomArrayElement, getUniqueArray, getLocation} from './utils.js';
 
 // Переменные-константы:
 const TITLES = [
@@ -54,19 +54,6 @@ const AVATARS_COUNT = 8;
 const MAX_PRICE = 1000000;
 const MAX_ROOMS_COUNT = 100;
 const MAX_GUESTS_COUNT = 100;
-const MIN_X_COORDINATE = 35.65000;
-const MAX_X_COORDINATE = 35.70000;
-const MIN_Y_COORDINATE = 139.70000;
-const MAX_Y_COORDINATE = 139.80000;
-const COORDINATE_DECIMALS = 5;
-
-// Получаем случайные координаты из заданного интервала
-const getLocation = () => {
-  return {
-    x: getCoordinates(MIN_X_COORDINATE, MAX_X_COORDINATE, COORDINATE_DECIMALS),
-    y: getCoordinates(MIN_Y_COORDINATE, MAX_Y_COORDINATE, COORDINATE_DECIMALS),
-  };
-}
 
 // Создаём объявление
 const createStay = () => {
@@ -97,4 +84,13 @@ const createStay = () => {
   }
 };
 
-export {createStay};
+// Создаём массив объявлений
+const getSimilarStays = (count) => {
+  const similarStays = [];
+  for (let i = 1; i <= count; i++) {
+    similarStays.push(createStay());
+  }
+  return similarStays;
+};
+
+export {getSimilarStays};
