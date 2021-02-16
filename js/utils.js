@@ -50,4 +50,11 @@ const getLocation = () => {
   };
 }
 
-export {getRandomInteger, getRandomArrayElement, getUniqueArray, getLocation};
+// Скрываем элемент, если данные пусты
+const hideElement = (dataItem, element) => {
+  if (!dataItem && dataItem !== 0) { // Не равна нулю - это для price. Если цена = 0, то всё равно цену надо показать
+    element.classList.add('hidden');
+  }
+}
+
+export {getRandomInteger, getRandomArrayElement, getUniqueArray, getLocation, hideElement};
