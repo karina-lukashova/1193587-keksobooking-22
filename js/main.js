@@ -1,4 +1,7 @@
 import {getSimilarStays} from './data.js';
+import {pasteCard} from './paste-card.js';
 
 const SIMILAR_STAYS_COUNT = 10;
-getSimilarStays(SIMILAR_STAYS_COUNT);
+
+const similarStays = getSimilarStays(SIMILAR_STAYS_COUNT);
+pasteCard(similarStays[0]);

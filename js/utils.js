@@ -50,4 +50,19 @@ const getLocation = () => {
   };
 }
 
-export {getRandomInteger, getRandomArrayElement, getUniqueArray, getLocation};
+// Создаем элемент разметки с одним классом
+const createElementWithOneClass = (tag, className) => {
+  const element = document.createElement(tag);
+  element.classList.add(className);
+  return element;
+}
+
+// Создаем элемент разметки с двумя классами
+const createElementWithTwoClasses = (tag, className1, className2) => {
+  const element = document.createElement(tag);
+  element.classList.add(className1);
+  element.classList.add(className2);
+  return element;
+}
+
+export {getRandomInteger, getRandomArrayElement, getUniqueArray, getLocation, createElementWithOneClass, createElementWithTwoClasses};
