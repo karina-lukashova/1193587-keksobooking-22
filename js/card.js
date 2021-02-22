@@ -1,5 +1,10 @@
 import {createElementWithOneClass, createElementWithTwoClasses} from './utils.js';
 
+const photoWidth = 45;
+const photoHeight = 40;
+const avatarWidth = 70;
+const avatarHeight = 70;
+
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
 const mapContainer = document.querySelector('#map-canvas');
 
@@ -24,8 +29,8 @@ const createPhotos = (array) => {
   array.forEach(photo => {
     const photoElement = createElementWithTwoClasses('img', 'popup__photo');
     photoElement.src = photo;
-    photoElement.width = '45';
-    photoElement.height = '40';
+    photoElement.width = photoWidth;
+    photoElement.height = photoHeight;
     photosFragment.appendChild(photoElement);
   })
   return photosFragment;
@@ -37,8 +42,8 @@ const renderCard = ({author, offer}) => {
   // Вставка аватара пользователя, если это есть в данных
   if (author.avatar) {
     const avatarElement = createElementWithOneClass('img', 'popup__avatar');
-    avatarElement.width = '70';
-    avatarElement.height = '70';
+    avatarElement.width = avatarWidth;
+    avatarElement.height = avatarHeight;
     avatarElement.src = author.avatar;
     stayElement.appendChild(avatarElement);
   }

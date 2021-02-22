@@ -1,5 +1,5 @@
 import {getSimilarStays} from './data.js';
-import {pasteCard} from './paste-card.js';
+import {pasteCard} from './card.js';
 
 const SIMILAR_STAYS_COUNT = 10;
 
