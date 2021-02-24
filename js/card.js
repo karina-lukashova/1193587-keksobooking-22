@@ -1,7 +1,12 @@
 import {createElementWithOneClass, createElementWithTwoClasses} from './utils.js';
 
+const PHOTO_WIDTH = 45;
+const PHOTO_HEIGHT = 40;
+const AVATAR_WIDTH = 70;
+const AVATAR_HEIGHT = 70;
+
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
-const mapContainer = document.querySelector('#map-canvas');
+const mapContainerElement = document.querySelector('#map-canvas');
 
 const offerTypesMap = {
   'palace': 'Дворец',
@@ -24,8 +29,8 @@ const createPhotos = (array) => {
   array.forEach(photo => {
     const photoElement = createElementWithTwoClasses('img', 'popup__photo');
     photoElement.src = photo;
-    photoElement.width = '45';
-    photoElement.height = '40';
+    photoElement.width = PHOTO_WIDTH;
+    photoElement.height = PHOTO_HEIGHT;
     photosFragment.appendChild(photoElement);
   })
   return photosFragment;
@@ -37,8 +42,8 @@ const renderCard = ({author, offer}) => {
   // Вставка аватара пользователя, если это есть в данных
   if (author.avatar) {
     const avatarElement = createElementWithOneClass('img', 'popup__avatar');
-    avatarElement.width = '70';
-    avatarElement.height = '70';
+    avatarElement.width = AVATAR_WIDTH;
+    avatarElement.height = AVATAR_HEIGHT;
     avatarElement.src = author.avatar;
     stayElement.appendChild(avatarElement);
   }
@@ -110,7 +115,7 @@ const renderCard = ({author, offer}) => {
 }
 
 const pasteCard = (card) => {
-  mapContainer.appendChild(renderCard(card));
+  mapContainerElement.appendChild(renderCard(card));
 }
 
 export {pasteCard};
