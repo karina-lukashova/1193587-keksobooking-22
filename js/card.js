@@ -6,7 +6,6 @@ const AVATAR_WIDTH = 70;
 const AVATAR_HEIGHT = 70;
 
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
-const mapContainerElement = document.querySelector('#map-canvas');
 
 const offerTypesMap = {
   'palace': 'Дворец',
@@ -114,8 +113,4 @@ const renderCard = ({author, offer}) => {
   return stayElement;
 }
 
-const pasteCard = (card) => {
-  mapContainerElement.appendChild(renderCard(card));
-}
-
-export {pasteCard};
+export {renderCard};
