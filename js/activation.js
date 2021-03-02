@@ -1,16 +1,19 @@
 const formElement = document.querySelector('.ad-form');
 const formBlocks = [...document.querySelector('.ad-form').children];
 const mapFilters = [...document.querySelector('.map__filters').children];
-let isClose = true;
+const adressElement = document.querySelector('#address');
 
-const deactivateSite = () => {
-  if (isClose) {
-    formElement.classList.add('ad-form--disabled');
-    formBlocks.forEach(block => block.disabled = 'true');
-    mapFilters.forEach(filter => filter.disabled = 'true');
-  }
+const setDefault = () => {
+  formElement.classList.add('ad-form--disabled');
+  formBlocks.forEach(block => block.setAttribute('disabled', true));
+  mapFilters.forEach(filter => filter.setAttribute('disabled', true));
+  adressElement.readOnly = true;
 };
 
-const activateSite = () => isClose = false;
+const activateSite = () => {
+  formElement.classList.remove('ad-form--disabled');
+  formBlocks.forEach(block => block.removeAttribute('disabled'));
+  mapFilters.forEach(filter => filter.removeAttribute('disabled'));
+};
 
-export {deactivateSite, activateSite};
+export {setDefault, activateSite};
