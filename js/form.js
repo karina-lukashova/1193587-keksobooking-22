@@ -1,3 +1,7 @@
+import {mainMarker} from './map.js';
+
+const DIGITS_NUMBER = 5;
+
 const stayTypeElement = document.querySelector('#type');
 const stayPriceElement = document.querySelector('#price');
 const stayTimeInElement = document.querySelector('#timein');
@@ -26,3 +30,15 @@ stayTypeElement.addEventListener('input', () => {
 // Синхронизация времени:
 synchronizeTime(stayTimeInElement, stayTimeOutElement);
 synchronizeTime(stayTimeOutElement, stayTimeInElement);
+
+// Поле адреса в зависимости от положения основной метки:
+const adressElement = document.querySelector('#address');
+
+const getAdressValue = (marker) => `${marker._latlng.lat.toFixed(DIGITS_NUMBER)}, ${marker._latlng.lng.toFixed(DIGITS_NUMBER)}`;
+
+adressElement.value = getAdressValue(mainMarker);
+mainMarker.on('moveend', () => {
+  adressElement.value = getAdressValue(mainMarker);
+});
+
+export {adressElement};
