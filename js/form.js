@@ -1,4 +1,5 @@
-import {mainMarker} from './map.js';
+import {mainMarker, setDefaultMainMarker} from './map.js';
+import {showErrorMessage} from './show-message.js'
 
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
@@ -7,6 +8,7 @@ const MAX_CAPACITY = '100';
 const MAX_PRICE = 1000000;
 const DIGITS_NUMBER = 5;
 
+const stayForm = document.querySelector('.ad-form');
 const stayTypeElement = document.querySelector('#type');
 const stayPriceElement = document.querySelector('#price');
 const stayTimeInElement = document.querySelector('#timein');
@@ -15,6 +17,10 @@ const titleElement = document.querySelector('#title');
 const priceElement = document.querySelector('#price');
 const roomNumberElement = document.querySelector('#room_number');
 const capacityElement = document.querySelector('#capacity');
+const descriptionElement = document.querySelector('#description');
+const featureElements = [...document.querySelectorAll('.feature__checkbox')];
+const selectFilterElements = [...document.querySelectorAll('.map__filter')]
+const featureFilterElements = [...document.querySelectorAll('.map__checkbox')]
 
 const minPriceForTypeMap = {
   'bungalow': 0,
@@ -109,3 +115,69 @@ mainMarker.on('moveend', () => {
 });
 
 export {adressElement};
+
+// Отправка формы
+const setUserFormSubmit = (onSuccess) => {
+  stayForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    const formData = new FormData(evt.target);
+
+    fetch(
+      'https://22.javascript.pages.academy/keksobooking',
+      {
+        method: 'POST',
+        body: formData,
+      },
+    )
+      .then((response) => {
+        if (response.ok) {
+          onSuccess();
+        } else {
+          showErrorMessage();
+        }
+      })
+      .catch(() => {
+        showErrorMessage();
+      });
+  });
+};
+
+
+// Сброс формы после отправки/сброса формы
+const setDefaultForm = () => {
+  titleElement.value = '';
+  stayTypeElement.value = 'bungalow';
+  stayPriceElement.value = '';
+  stayPriceElement.placeholder = '0';
+  stayPriceElement.min = '0';
+  roomNumberElement.value = '1';
+  capacityElement.value = '1';
+  stayTimeInElement.value = '12:00';
+  stayTimeOutElement.value = '12:00';
+  descriptionElement.value = '';
+  featureElements.forEach(feature => {
+    feature.checked = false;
+  });
+  adressElement.value = getAdressValue(mainMarker);
+}
+
+// Сброс фильтров после отправки/сброса формы
+const setDefaultFilters = () => {
+  selectFilterElements.forEach(select => {
+    select.value = 'any';
+  });
+  featureFilterElements.forEach(feature => {
+    feature.checked = false;
+  })
+}
+
+// Ресет формы
+stayForm.addEventListener('reset', () => {
+  setDefaultMainMarker();
+  setDefaultFilters();
+  stayPriceElement.placeholder = '0';
+  stayPriceElement.min = '0';
+})
+
+export {setUserFormSubmit, setDefaultForm, setDefaultFilters};

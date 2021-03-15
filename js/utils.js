@@ -65,4 +65,9 @@ const createElementWithTwoClasses = (tag, className1, className2) => {
   return element;
 }
 
-export {getRandomInteger, getRandomArrayElement, getUniqueArray, getLocation, createElementWithOneClass, createElementWithTwoClasses};
+// Проверяем кнопку Esc
+const isEscEvent = (evt) => {
+  return evt.key === 'Escape' || evt.key === 'Esc';
+};
+
+export {getRandomInteger, getRandomArrayElement, getUniqueArray, getLocation, createElementWithOneClass, createElementWithTwoClasses, isEscEvent};
