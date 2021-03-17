@@ -926,7 +926,7 @@ fieldset {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 2;
+  z-index: 1001;
 
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
@@ -946,6 +946,7 @@ fieldset {
 .success__message,
 .error__message {
   position: relative;
+  z-index: 1001;
 
   color: #ffffff;
   font-size: 50px;
@@ -1003,6 +1004,24 @@ fieldset {
 .error__button:active {
   outline: none;
   opacity: 0.6;
+}
+
+.data-error {
+  padding: 10px 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: red;
+  z-index: 1000;
+}
+
+.data-error__message {
+  margin: 0;
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 700;
+  text-align: center;
 }
 
 .visually-hidden {

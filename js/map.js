@@ -1,17 +1,13 @@
 // Импорт модулей:
 import {setDefault, activateSite} from './activation.js';
-import {getSimilarStays} from './data.js';
 import {renderCard} from './card.js';
 
 // Переменные:
-const SIMILAR_STAYS_COUNT = 10;
 const MAIN_MARKER_SIZE = 52;
 const MARKER_SIZE = 46;
 // Координаты взяла с сайта: https://dateandtime.info/ru/citycoordinates.php?id=1850147
 const CENTER_LATITUDE = 35.68950;
 const CENTER_LONGITUDE = 139.69171;
-
-const similarStays = getSimilarStays(SIMILAR_STAYS_COUNT);
 
 // Функция установления изначальных настроек сайта (поля заблокированы, адрес = readonly)
 setDefault();
@@ -60,12 +56,12 @@ const mainMarker = L.marker(
 
 mainMarker.addTo(map);
 
-const pasteCards = () => {
+const pasteCards = (similarStays) => {
   for (let i = 0; i < similarStays.length;i++) {
     const marker = L.marker(
       {
-        lat: similarStays[i].location.x,
-        lng: similarStays[i].location.y,
+        lat: similarStays[i].location.lat,
+        lng: similarStays[i].location.lng,
       },
       {
         icon: markerIcon,
@@ -77,6 +73,9 @@ const pasteCards = () => {
   }
 }
 
-pasteCards();
+// Установка основного маркера по умолчанию после отправки/сброса формы
+const setDefaultMainMarker = () => {
+  mainMarker.setLatLng([CENTER_LATITUDE, CENTER_LONGITUDE]);
+}
 
-export {mainMarker};
+export {mainMarker, pasteCards, setDefaultMainMarker};
