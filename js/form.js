@@ -88,15 +88,13 @@ titleElement.addEventListener('input', onTextInput);
 priceElement.addEventListener('input', onPriceInput);
 
 // Валидация соответствия количества гостей от количества комнат - при изменении количества комнат:
-roomNumberElement.addEventListener('input', () => onCapacityInput(roomNumberElement.value))
+roomNumberElement.addEventListener('input', () => onCapacityInput(roomNumberElement.value));
 
 // Валидация соответствия количества гостей от количества комнат - при изменении количества гостей:
-capacityElement.addEventListener('input', () => onCapacityInput(roomNumberElement.value))
+capacityElement.addEventListener('input', () => onCapacityInput(roomNumberElement.value));
 
 // Синхронизация цены и типа жилья
-stayTypeElement.addEventListener('input', () => {
-  onStayTypeInput()
-})
+stayTypeElement.addEventListener('input', onStayTypeInput);
 
 // Синхронизация времени:
 synchronizeTime(stayTimeInElement, stayTimeOutElement);
@@ -124,9 +122,7 @@ const onStayFormReset = () => {
 }
 
 // Ресет формы
-stayForm.addEventListener('reset', () => {
-  onStayFormReset();
-})
+stayForm.addEventListener('reset', onStayFormReset)
 
 // Функция после успешной отправки данных формы
 const sendSuccessForm = () => {
