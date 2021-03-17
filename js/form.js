@@ -1,5 +1,6 @@
 import {mainMarker, setDefaultMainMarker} from './map.js';
-import {showErrorMessage} from './show-message.js'
+import {showSuccessMessage, showErrorMessage} from './show-message.js'
+import {sendData} from './server.js';
 
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
@@ -17,10 +18,7 @@ const titleElement = document.querySelector('#title');
 const priceElement = document.querySelector('#price');
 const roomNumberElement = document.querySelector('#room_number');
 const capacityElement = document.querySelector('#capacity');
-const descriptionElement = document.querySelector('#description');
-const featureElements = [...document.querySelectorAll('.feature__checkbox')];
-const selectFilterElements = [...document.querySelectorAll('.map__filter')]
-const featureFilterElements = [...document.querySelectorAll('.map__checkbox')]
+const filterFormElement = document.querySelector('.map__filters');
 
 const minPriceForTypeMap = {
   'bungalow': 0,
@@ -30,7 +28,7 @@ const minPriceForTypeMap = {
 }
 
 // Функция валидации текста на нужное количество символов:
-const onTextValidate = ({currentTarget}) => {
+const onTextInput = ({currentTarget}) => {
   const titleLength = currentTarget.value.length;
   if (titleLength < MIN_TITLE_LENGTH) {
     currentTarget.setCustomValidity('Введите ещё ' + (MIN_TITLE_LENGTH - titleLength) +' симв.');
@@ -44,7 +42,7 @@ const onTextValidate = ({currentTarget}) => {
 }
 
 // Функция валидации цены на минимум и максимум:
-const onPriceValidate = ({currentTarget}) => {
+const onPriceInput = ({currentTarget}) => {
   const priceValue = currentTarget.value;
   if (priceValue < MIN_PRICE) {
     currentTarget.setCustomValidity('Цена должна быть минимум 0 рублей');
@@ -58,7 +56,7 @@ const onPriceValidate = ({currentTarget}) => {
 }
 
 // Функция валидации количества комнат и гостей:
-const validateRoomCapacity = (value) => {
+const onCapacityInput = (value) => {
   if (value === MAX_CAPACITY && capacityElement.value!=='0') {
     capacityElement.setCustomValidity('100 комнат может быть только "не для гостей"');
   } else if (value!==MAX_CAPACITY && capacityElement.value=='0') {
@@ -73,7 +71,7 @@ const validateRoomCapacity = (value) => {
 }
 
 // Функция установки минимальной цены:
-const setMinPrice = () => {
+const onStayTypeInput = () => {
   stayPriceElement.min = minPriceForTypeMap[stayTypeElement.value];
   stayPriceElement.placeholder = minPriceForTypeMap[stayTypeElement.value];
 }
@@ -84,20 +82,20 @@ const synchronizeTime = (firstTime, secondTime) => {
 }
 
 // Валидация названия объявления:
-titleElement.addEventListener('input', onTextValidate);
+titleElement.addEventListener('input', onTextInput);
 
 // Валидация цены:
-priceElement.addEventListener('input', onPriceValidate);
+priceElement.addEventListener('input', onPriceInput);
 
 // Валидация соответствия количества гостей от количества комнат - при изменении количества комнат:
-roomNumberElement.addEventListener('input', () => validateRoomCapacity(roomNumberElement.value))
+roomNumberElement.addEventListener('input', () => onCapacityInput(roomNumberElement.value))
 
 // Валидация соответствия количества гостей от количества комнат - при изменении количества гостей:
-capacityElement.addEventListener('input', () => validateRoomCapacity(roomNumberElement.value))
+capacityElement.addEventListener('input', () => onCapacityInput(roomNumberElement.value))
 
 // Синхронизация цены и типа жилья
 stayTypeElement.addEventListener('input', () => {
-  setMinPrice()
+  onStayTypeInput()
 })
 
 // Синхронизация времени:
@@ -116,68 +114,32 @@ mainMarker.on('moveend', () => {
 
 export {adressElement};
 
-// Отправка формы
-const setUserFormSubmit = (onSuccess) => {
-  stayForm.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-
-    const formData = new FormData(evt.target);
-
-    fetch(
-      'https://22.javascript.pages.academy/keksobooking',
-      {
-        method: 'POST',
-        body: formData,
-      },
-    )
-      .then((response) => {
-        if (response.ok) {
-          onSuccess();
-        } else {
-          showErrorMessage();
-        }
-      })
-      .catch(() => {
-        showErrorMessage();
-      });
-  });
-};
-
-
-// Сброс формы после отправки/сброса формы
-const setDefaultForm = () => {
-  titleElement.value = '';
-  stayTypeElement.value = 'bungalow';
-  stayPriceElement.value = '';
-  stayPriceElement.placeholder = '0';
-  stayPriceElement.min = '0';
-  roomNumberElement.value = '1';
-  capacityElement.value = '1';
-  stayTimeInElement.value = '12:00';
-  stayTimeOutElement.value = '12:00';
-  descriptionElement.value = '';
-  featureElements.forEach(feature => {
-    feature.checked = false;
-  });
-  adressElement.value = getAdressValue(mainMarker);
-}
-
-// Сброс фильтров после отправки/сброса формы
-const setDefaultFilters = () => {
-  selectFilterElements.forEach(select => {
-    select.value = 'any';
-  });
-  featureFilterElements.forEach(feature => {
-    feature.checked = false;
-  })
+// Сброс формы, фильтров и маркера до default
+const onStayFormReset = () => {
+  stayForm.reset();
+  stayPriceElement.min = 0;
+  stayPriceElement.placeholder = 0;
+  filterFormElement.reset();
+  setDefaultMainMarker();
 }
 
 // Ресет формы
 stayForm.addEventListener('reset', () => {
-  setDefaultMainMarker();
-  setDefaultFilters();
-  stayPriceElement.placeholder = '0';
-  stayPriceElement.min = '0';
+  onStayFormReset();
 })
 
-export {setUserFormSubmit, setDefaultForm, setDefaultFilters};
+// Функция после успешной отправки данных формы
+const sendSuccessForm = () => {
+  showSuccessMessage();
+  onStayFormReset();
+}
+
+// Функция для отправки формы
+const onFormSubmit = (evt) => {
+  evt.preventDefault();
+  const formData = new FormData(evt.target);
+  sendData(formData, sendSuccessForm, showErrorMessage);
+}
+
+// Отправка формы
+stayForm.addEventListener('submit', (evt) => onFormSubmit(evt))
