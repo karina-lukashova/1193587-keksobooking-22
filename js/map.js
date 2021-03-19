@@ -1,6 +1,7 @@
 // Импорт модулей:
 import {setDefault, activateSite} from './activation.js';
 import {renderCard} from './card.js';
+import {filterByType, setTypeFilterChange} from './filter.js';
 
 // Переменные:
 const MAIN_MARKER_SIZE = 52;
@@ -8,6 +9,8 @@ const MARKER_SIZE = 46;
 // Координаты взяла с сайта: https://dateandtime.info/ru/citycoordinates.php?id=1850147
 const CENTER_LATITUDE = 35.68950;
 const CENTER_LONGITUDE = 139.69171;
+
+const SIMILAR_STAYS_COUNT = 10;
 
 // Функция установления изначальных настроек сайта (поля заблокированы, адрес = readonly)
 setDefault();
@@ -56,21 +59,41 @@ const mainMarker = L.marker(
 
 mainMarker.addTo(map);
 
-const pasteCards = (similarStays) => {
-  for (let i = 0; i < similarStays.length;i++) {
+// Создать маркеры
+const createMarkers = (stays) => {
+  const markers = [];
+  for (let i = 0; i < stays.length;i++) {
     const marker = L.marker(
       {
-        lat: similarStays[i].location.lat,
-        lng: similarStays[i].location.lng,
+        lat: stays[i].location.lat,
+        lng: stays[i].location.lng,
       },
       {
         icon: markerIcon,
       },
-    )
-    marker
-      .addTo(map)
-      .bindPopup(renderCard(similarStays[i]));
+    );
+    markers.push(marker);
   }
+  return(markers);
+}
+
+// Удалить маркеры
+const deleteMarkers = (markers) => {
+  for (let i = 0; i < markers.length;i++) {
+    markers[i]
+      .remove();
+  }
+}
+
+const pasteCards = (similarStays) => {
+  const finalSimilarStays = filterByType(similarStays).slice(0, SIMILAR_STAYS_COUNT);
+  const markers = createMarkers(finalSimilarStays);
+  for (let i = 0; i < markers.length;i++) {
+    markers[i]
+      .addTo(map)
+      .bindPopup(renderCard(finalSimilarStays[i]));
+  }
+  setTypeFilterChange(() => deleteMarkers(markers));
 }
 
 // Установка основного маркера по умолчанию после отправки/сброса формы
