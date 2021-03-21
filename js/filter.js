@@ -6,21 +6,23 @@ const blockFilters = () => {
   mapFilters.forEach(filter => filter.setAttribute('disabled', true));
 };
 
-// Фильтр по типу жилья
-const filterByType = (stays) => {
-  if (typeFilterElement.value !== 'any') {
-    const filteredStays = stays.filter(stay => stay.offer.type === typeFilterElement.value)
-    return filteredStays;
-  } else {
-    return stays;
-  }
-};
+// Фильтр по типу жилья - предикат
+const isTypeTheSame = (stay) => {
+  return typeFilterElement.value === 'any' ? true : stay.offer.type === typeFilterElement.value;
+}
 
-const setTypeFilterChange = (cb) => {
-  typeFilterElement.addEventListener('input', () => {
-    cb();
-  })
-};
+// Функция со всеми фильтрами
+const filterStays = (stays) => {
+  return stays.filter(stay => {
+    return isTypeTheSame(stay);
+    // Потом через && добавим предикаты остальных фильтров
+  });
+}
+
+const setFiltersChange = (cb) => {
+  typeFilterElement.addEventListener('input', cb);
+  // Потом добавим событие input для каждого фильтра
+}
 
 
-export {blockFilters, filterByType, setTypeFilterChange};
+export {blockFilters, filterStays, setFiltersChange};

@@ -1,7 +1,7 @@
 // Импорт модулей:
 import {setDefault, activateSite} from './activation.js';
 import {renderCard} from './card.js';
-import {filterByType, setTypeFilterChange} from './filter.js';
+import {filterStays, setFiltersChange} from './filter.js';
 
 // Переменные:
 const MAIN_MARKER_SIZE = 52;
@@ -86,14 +86,14 @@ const deleteMarkers = (markers) => {
 }
 
 const pasteCards = (similarStays) => {
-  const finalSimilarStays = filterByType(similarStays).slice(0, SIMILAR_STAYS_COUNT);
+  const finalSimilarStays = filterStays(similarStays).slice(0, SIMILAR_STAYS_COUNT);
   const markers = createMarkers(finalSimilarStays);
   for (let i = 0; i < markers.length;i++) {
     markers[i]
       .addTo(map)
       .bindPopup(renderCard(finalSimilarStays[i]));
   }
-  setTypeFilterChange(() => deleteMarkers(markers));
+  setFiltersChange(() => deleteMarkers(markers));
 }
 
 // Установка основного маркера по умолчанию после отправки/сброса формы
