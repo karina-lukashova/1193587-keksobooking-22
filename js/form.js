@@ -1,6 +1,7 @@
 import {mainMarker, setDefaultMainMarker} from './map.js';
 import {showSuccessMessage, showErrorMessage} from './show-message.js'
 import {sendData} from './server.js';
+import {avatarPreview, stayPhotoPreview} from './images.js';
 
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
@@ -117,6 +118,8 @@ const onStayFormReset = () => {
   stayForm.reset();
   stayPriceElement.min = 0;
   stayPriceElement.placeholder = 0;
+  avatarPreview.src = 'img/muffin-grey.svg';
+  stayPhotoPreview.src = 'img/muffin-grey.svg';
   filterFormElement.reset();
   setDefaultMainMarker();
 }
