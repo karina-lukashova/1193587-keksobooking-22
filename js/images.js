@@ -1,35 +1,55 @@
+import {deleteChildren, pasteImage} from './utils.js';
+
 const IMAGE_TYPES = ['jpg', 'jpeg', 'png'];
 
-const avatarChooser = document.querySelector('.ad-form-header__input');
-const avatarPreview = document.querySelector('.ad-form-header__preview img');
-const stayPhotoChooser = document.querySelector('.ad-form__input');
-const stayPhotoPreview = document.querySelector('.ad-form__photo img');
+const avatarChooserElement = document.querySelector('.ad-form-header__input');
+const avatarContainerElement = document.querySelector('.ad-form-header__preview');
+const avatarPreviewElement = document.querySelector('.ad-form-header__preview img');
+const stayPhotoChooserElement = document.querySelector('.ad-form__input');
+const stayPhotosContainerElement = document.querySelector('.ad-form__photo');
+const stayPhotoPreviewElement = document.querySelector('.ad-form__photo img');
 
-const onImageChooserChange = (chooser, preview) => {
-  const avatarFile = chooser.files[0];
-  const avatarFileName = avatarFile.name.toLowerCase();
-
-  const matches = IMAGE_TYPES.some((it) => {
-    return avatarFileName.endsWith(it);
+const readImageWithSubscribe = (file, fileName, preview, container) => {
+  const matches = IMAGE_TYPES.some((item) => {
+    return fileName.endsWith(item);
   });
 
   if (matches) {
     const reader = new FileReader();
 
     reader.addEventListener('load', () => {
-      preview.src = reader.result;
+      pasteImage(preview, container, reader.result);
     });
 
-    reader.readAsDataURL(avatarFile);
+    reader.readAsDataURL(file);
   }
 }
 
-avatarChooser.addEventListener('change', () => {
-  onImageChooserChange(avatarChooser, avatarPreview);
+const onAvatarChooserChange = (chooser, preview, container) => {
+  deleteChildren(container);
+
+  const avatarFile = chooser.files[0];
+  const avatarFileName = avatarFile.name.toLowerCase();
+
+  readImageWithSubscribe(avatarFile, avatarFileName, preview, container);
+}
+
+const onImageChooserChange = (chooser, preview, container) => {
+  deleteChildren(container);
+
+  for (let i = 0; i < chooser.files.length; i++) {
+    const avatarFileName = chooser.files[i].name.toLowerCase();
+
+    readImageWithSubscribe(chooser.files[i], avatarFileName, preview, container);
+  }
+}
+
+avatarChooserElement.addEventListener('change', () => {
+  onAvatarChooserChange(avatarChooserElement, avatarPreviewElement, avatarContainerElement);
 });
 
-stayPhotoChooser.addEventListener('change', () => {
-  onImageChooserChange(stayPhotoChooser, stayPhotoPreview);
+stayPhotoChooserElement.addEventListener('change', () => {
+  onImageChooserChange(stayPhotoChooserElement, stayPhotoPreviewElement, stayPhotosContainerElement);
 });
 
-export {avatarPreview, stayPhotoPreview};
+export {avatarContainerElement, avatarPreviewElement, stayPhotosContainerElement, stayPhotoPreviewElement};

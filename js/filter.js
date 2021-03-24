@@ -1,3 +1,14 @@
+const ANY_VALUE = 'any';
+const LOW_VALUE = 'low';
+const MIDDLE_VALUE = 'middle';
+const HIGH_VALUE = 'high';
+const FILTER_VALUE = /filter-/;
+
+const PriceRange = {
+  MIN_MIDDLE: 10000,
+  MIN_HIGH: 50000,
+}
+
 const mapFilters = [...document.querySelector('.map__filters').children];
 const selectFilterElements = [...document.querySelectorAll('.map__filter')];
 const featuresFilterElements = [...document.querySelectorAll('.map__checkbox')];
@@ -19,36 +30,31 @@ const blockFilters = () => {
 
 // Фильтр по типу жилья - предикат
 const isTypeTheSame = (stay) => {
-  return typeFilterElement.value === 'any' ? true : stay.offer.type === typeFilterElement.value;
+  return typeFilterElement.value === ANY_VALUE ? true : stay.offer.type === typeFilterElement.value;
 }
 
 // Фильтр по цене - предикат
 const isPriceTheSame = (stay) => {
-  switch (priceFilterElement.value) {
-    case 'low':
-      return stay.offer.price < 10000;
-    case 'middle':
-      return stay.offer.price >= 10000 && stay.offer.price < 50000;
-    case 'high':
-      return stay.offer.price >= 50000;
-    default:
-      return true;
-  }
+  return priceFilterElement.value === ANY_VALUE ? true : (
+    ((priceFilterElement.value === LOW_VALUE) && (stay.offer.price < PriceRange.MIN_MIDDLE)) ||
+    ((priceFilterElement.value === HIGH_VALUE) && (stay.offer.price >= PriceRange.MIN_HIGH)) ||
+    ((priceFilterElement.value === MIDDLE_VALUE) && (stay.offer.price >= PriceRange.MIN_MIDDLE) && (stay.offer.price < PriceRange.MIN_HIGH))
+  );
 }
 
 // Фильтр по числу комнат - предикат
 const isRoomsTheSame = (stay) => {
-  return roomsFilterElement.value === 'any' ? true : stay.offer.rooms.toString() === roomsFilterElement.value;
+  return roomsFilterElement.value === ANY_VALUE ? true : stay.offer.rooms.toString() === roomsFilterElement.value;
 }
 
 // Фильтр по числу гостей - предикат
 const isGuestsTheSame = (stay) => {
-  return guestsFilterElement.value === 'any' ? true : stay.offer.guests.toString() === guestsFilterElement.value;
+  return guestsFilterElement.value === ANY_VALUE ? true : stay.offer.guests.toString() === guestsFilterElement.value;
 }
 
 // Фильтр по дополнительным удобствам
 const isFeatureTheSame = (featureElement, stay) => {
-  const featureName = featureElement.getAttribute('id').replace(/filter-/, '');
+  const featureName = featureElement.getAttribute('id').replace(FILTER_VALUE, '');
   return featureElement.checked === false ? true  : stay.offer.features.includes(featureName);
 }
 

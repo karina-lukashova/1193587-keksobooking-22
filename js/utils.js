@@ -70,4 +70,18 @@ const isEscEvent = (evt) => {
   return evt.key === 'Escape' || evt.key === 'Esc';
 };
 
-export {getRandomInteger, getRandomArrayElement, getUniqueArray, getLocation, createElementWithOneClass, createElementWithTwoClasses, isEscEvent};
+// Функция удаления всех детей
+const deleteChildren = (parent) => {
+  while (parent.firstChild) {
+    parent.removeChild(parent.firstChild);
+  }
+}
+
+// Вставляем создаем изображение и вставляем в контейнер
+const pasteImage = (imageElement, container, src) => {
+  const image = imageElement.cloneNode(true);
+  image.src = src;
+  container.appendChild(image);
+}
+
+export {getRandomInteger, getRandomArrayElement, getUniqueArray, getLocation, createElementWithOneClass, createElementWithTwoClasses, isEscEvent, deleteChildren, pasteImage};

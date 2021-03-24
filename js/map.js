@@ -1,9 +1,7 @@
-// Импорт модулей:
 import {setDefault, activateSite} from './activation.js';
 import {renderCard} from './card.js';
 import {filterStays, setFiltersChange} from './filter.js';
 
-// Переменные:
 const MAIN_MARKER_SIZE = 52;
 const MARKER_SIZE = 46;
 // Координаты взяла с сайта: https://dateandtime.info/ru/citycoordinates.php?id=1850147
