@@ -1,6 +1,8 @@
 import {mainMarker, setDefaultMainMarker} from './map.js';
 import {showSuccessMessage, showErrorMessage} from './show-message.js'
-import {sendData} from './server.js';
+import {getStaysData, sendData} from './server.js';
+import {avatarContainerElement, avatarPreviewElement, stayPhotosContainerElement, stayPhotoPreviewElement} from './images.js';
+import {deleteChildren, pasteImage} from './utils.js';
 
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
@@ -57,9 +59,9 @@ const onPriceInput = ({currentTarget}) => {
 
 // Функция валидации количества комнат и гостей:
 const onCapacityInput = (value) => {
-  if (value === MAX_CAPACITY && capacityElement.value!=='0') {
+  if (value === MAX_CAPACITY && capacityElement.value !== '0') {
     capacityElement.setCustomValidity('100 комнат может быть только "не для гостей"');
-  } else if (value!==MAX_CAPACITY && capacityElement.value=='0') {
+  } else if (value !== MAX_CAPACITY && capacityElement.value === '0') {
     capacityElement.setCustomValidity('Выберите количество гостей, оно не может равняться 0');
   } else if (value < capacityElement.value) {
     capacityElement.setCustomValidity(`Количество гостей должно быть не больше ${value}`);
@@ -117,8 +119,13 @@ const onStayFormReset = () => {
   stayForm.reset();
   stayPriceElement.min = 0;
   stayPriceElement.placeholder = 0;
+  deleteChildren(avatarContainerElement);
+  pasteImage(avatarPreviewElement, avatarContainerElement, 'img/muffin-grey.svg');
+  deleteChildren(stayPhotosContainerElement);
+  pasteImage(stayPhotoPreviewElement, stayPhotosContainerElement, 'img/muffin-grey.svg');
   filterFormElement.reset();
   setDefaultMainMarker();
+  getStaysData();
 }
 
 // Ресет формы
