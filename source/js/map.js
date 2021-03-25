@@ -1,6 +1,10 @@
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+
 import {setDefault, activateSite} from './activation.js';
 import {renderCard} from './card.js';
 import {filterStays, setFiltersChange} from './filter.js';
+import {setFormReset} from './form.js';
 
 const MAIN_MARKER_SIZE = 52;
 const MARKER_SIZE = 46;
@@ -14,7 +18,6 @@ const SIMILAR_STAYS_COUNT = 10;
 setDefault();
 
 // Настройка карты:
-/* global L:readonly */
 const map = L.map('map-canvas')
   .on('load', () => {
     activateSite();

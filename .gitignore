@@ -6,6 +6,8 @@
 *.psd
 *.sublime*
 build/js/main.bundle.js
+build/css/leaflet/
+build/img/leaflet/
 node_modules/
 npm-debug.log*
 Thumbs.db
