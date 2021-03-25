@@ -4,7 +4,6 @@ import 'leaflet/dist/leaflet.css';
 import {setDefault, activateSite} from './activation.js';
 import {renderCard} from './card.js';
 import {filterStays, setFiltersChange} from './filter.js';
-import {setFormReset} from './form.js';
 
 const MAIN_MARKER_SIZE = 52;
 const MARKER_SIZE = 46;
