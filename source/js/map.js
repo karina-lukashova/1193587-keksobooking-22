@@ -4,6 +4,7 @@ import 'leaflet/dist/leaflet.css';
 import {setDefault, activateSite} from './activation.js';
 import {renderCard} from './card.js';
 import {filterStays, setFiltersChange} from './filter.js';
+import {stayForm} from './form.js';
 
 const MAIN_MARKER_SIZE = 52;
 const MARKER_SIZE = 46;
@@ -94,6 +95,8 @@ const pasteCards = (similarStays) => {
       .bindPopup(renderCard(finalSimilarStays[i]));
   }
   setFiltersChange(() => deleteMarkers(markers));
+  stayForm.addEventListener('reset', () => deleteMarkers(markers));
+  stayForm.addEventListener('submit', () => deleteMarkers(markers));
 }
 
 // Установка основного маркера по умолчанию после отправки/сброса формы

@@ -1,6 +1,6 @@
 import {mainMarker, setDefaultMainMarker} from './map.js';
 import {showSuccessMessage, showErrorMessage} from './show-message.js'
-import {getStaysData, sendData} from './server.js';
+import {sendData} from './server.js';
 import {avatarContainerElement, avatarPreviewElement, stayPhotosContainerElement, stayPhotoPreviewElement} from './images.js';
 import {deleteChildren, pasteImage} from './utils.js';
 
@@ -125,11 +125,15 @@ const onStayFormReset = () => {
   pasteImage(stayPhotoPreviewElement, stayPhotosContainerElement, 'img/muffin-grey.svg');
   filterFormElement.reset();
   setDefaultMainMarker();
-  getStaysData();
 }
 
-// Ресет формы
-stayForm.addEventListener('reset', onStayFormReset)
+// Функция для вызова события ресета формы - для сброса маркеров и попапа карты
+const setformReset = (cb) => {
+  stayForm.addEventListener('reset', () => {
+    onStayFormReset();
+    cb();
+  })
+}
 
 // Функция после успешной отправки данных формы
 const sendSuccessForm = () => {
@@ -137,12 +141,19 @@ const sendSuccessForm = () => {
   onStayFormReset();
 }
 
-// Функция для отправки формы
+// Функция при отправки формы
 const onFormSubmit = (evt) => {
   evt.preventDefault();
   const formData = new FormData(evt.target);
   sendData(formData, sendSuccessForm, showErrorMessage);
 }
 
-// Отправка формы
-stayForm.addEventListener('submit', (evt) => onFormSubmit(evt))
+// Функция для вызова события отправки формы - для сброса маркеров и попапа карты
+const setFormSubmit = (cb) => {
+  stayForm.addEventListener('submit', (evt) => {
+    onFormSubmit(evt);
+    cb();
+  })
+}
+
+export {stayForm, setformReset, setFormSubmit};
