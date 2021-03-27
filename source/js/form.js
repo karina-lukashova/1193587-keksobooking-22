@@ -10,6 +10,7 @@ const MIN_PRICE = 0;
 const MAX_CAPACITY = '100';
 const MAX_PRICE = 1000000;
 const DIGITS_NUMBER = 5;
+const IMAGE_DEFAULT_SOURCE = 'img/muffin-grey.svg';
 
 const stayForm = document.querySelector('.ad-form');
 const stayTypeElement = document.querySelector('#type');
@@ -120,9 +121,9 @@ const onStayFormReset = () => {
   stayPriceElement.min = 0;
   stayPriceElement.placeholder = 0;
   deleteChildren(avatarContainerElement);
-  pasteImage(avatarPreviewElement, avatarContainerElement, 'img/muffin-grey.svg');
+  pasteImage(avatarPreviewElement, avatarContainerElement, IMAGE_DEFAULT_SOURCE);
   deleteChildren(stayPhotosContainerElement);
-  pasteImage(stayPhotoPreviewElement, stayPhotosContainerElement, 'img/muffin-grey.svg');
+  pasteImage(stayPhotoPreviewElement, stayPhotosContainerElement, IMAGE_DEFAULT_SOURCE);
   filterFormElement.reset();
   setDefaultMainMarker();
 }
