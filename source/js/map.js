@@ -80,7 +80,8 @@ const createMarkers = (stays) => {
 const deleteMarkers = (markers) => {
   for (let i = 0; i < markers.length;i++) {
     markers[i]
-      .remove();
+      .remove()
+      .off();
   }
 }
 
