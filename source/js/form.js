@@ -127,13 +127,13 @@ const onStayFormReset = () => {
   setDefaultMainMarker();
 }
 
-// Функция для вызова события ресета формы - для сброса маркеров и попапа карты
+// Функция для вызова события ресета формы
 const setformReset = (cb) => {
-  stayForm.addEventListener('reset', () => {
-    onStayFormReset();
-    cb();
-  })
+  stayForm.addEventListener('reset', cb)
 }
+
+// Сброс формы, фильтров и главного маркера при reset
+setformReset(() => onStayFormReset())
 
 // Функция после успешной отправки данных формы
 const sendSuccessForm = () => {
@@ -148,12 +148,12 @@ const onFormSubmit = (evt) => {
   sendData(formData, sendSuccessForm, showErrorMessage);
 }
 
-// Функция для вызова события отправки формы - для сброса маркеров и попапа карты
+// Функция для вызова события отправки формы
 const setFormSubmit = (cb) => {
-  stayForm.addEventListener('submit', (evt) => {
-    onFormSubmit(evt);
-    cb();
-  })
+  stayForm.addEventListener('submit', cb)
 }
+
+// Сброс формы, фильтров и главного маркера при submit + показ сообщения
+setFormSubmit((evt) => onFormSubmit(evt));
 
 export {stayForm, setformReset, setFormSubmit};

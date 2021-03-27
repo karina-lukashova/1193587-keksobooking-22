@@ -5,7 +5,7 @@
 *.pdf
 *.psd
 *.sublime*
-build/js/main.bundle.js
+build/js/
 build/css/leaflet/
 build/img/leaflet/
 node_modules/
