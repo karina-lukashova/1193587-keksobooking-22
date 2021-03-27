@@ -12,8 +12,6 @@ const MARKER_SIZE = 46;
 const CENTER_LATITUDE = 35.68950;
 const CENTER_LONGITUDE = 139.69171;
 
-const SIMILAR_STAYS_COUNT = 10;
-
 // Функция установления изначальных настроек сайта (поля заблокированы, адрес = readonly)
 setDefault();
 
@@ -87,7 +85,7 @@ const deleteMarkers = (markers) => {
 }
 
 const pasteCards = (similarStays) => {
-  const finalSimilarStays = filterStays(similarStays).slice(0, SIMILAR_STAYS_COUNT);
+  const finalSimilarStays = filterStays(similarStays);
   const markers = createMarkers(finalSimilarStays);
   for (let i = 0; i < markers.length;i++) {
     markers[i]

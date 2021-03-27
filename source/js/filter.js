@@ -9,6 +9,8 @@ const PriceRange = {
   MIN_HIGH: 50000,
 }
 
+const SIMILAR_STAYS_COUNT = 10;
+
 const mapFilters = [...document.querySelector('.map__filters').children];
 const selectFilterElements = [...document.querySelectorAll('.map__filter')];
 const featuresFilterElements = [...document.querySelectorAll('.map__checkbox')];
@@ -58,20 +60,26 @@ const isFeatureTheSame = (featureElement, stay) => {
   return featureElement.checked === false ? true  : stay.offer.features.includes(featureName);
 }
 
-// Функция со всеми фильтрами
 const filterStays = (stays) => {
-  return stays.filter(stay => {
-    return isTypeTheSame(stay)&&
-    isPriceTheSame(stay)&&
-    isRoomsTheSame(stay)&&
-    isGuestsTheSame(stay)&&
-    isFeatureTheSame(wifiFilterElement, stay)&&
-    isFeatureTheSame(dishwasherFilterElement, stay)&&
-    isFeatureTheSame(parkingFilterElement, stay)&&
-    isFeatureTheSame(washerFilterElement, stay)&&
-    isFeatureTheSame(elevatorFilterElement, stay)&&
-    isFeatureTheSame(conditionerFilterElement, stay);
-  });
+  const resultStays = [];
+  for (let i = 0; i < stays.length; i++) {
+    if (isTypeTheSame(stays[i])&&
+    isPriceTheSame(stays[i])&&
+    isRoomsTheSame(stays[i])&&
+    isGuestsTheSame(stays[i])&&
+    isFeatureTheSame(wifiFilterElement, stays[i])&&
+    isFeatureTheSame(dishwasherFilterElement, stays[i])&&
+    isFeatureTheSame(parkingFilterElement, stays[i])&&
+    isFeatureTheSame(washerFilterElement, stays[i])&&
+    isFeatureTheSame(elevatorFilterElement, stays[i])&&
+    isFeatureTheSame(conditionerFilterElement, stays[i])) {
+      resultStays.push(stays[i]);
+    }
+    if (resultStays.length >= SIMILAR_STAYS_COUNT) {
+      break;
+    }
+  }
+  return resultStays;
 }
 
 const setFiltersChange = (cb) => {
